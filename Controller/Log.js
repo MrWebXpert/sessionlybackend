@@ -35,33 +35,33 @@ const login = asyncHandler(async (req, res) => {
             return res.status(401).json({ message: "Invalid email or password" });
         }
 
-        const id = user._id; 
+        const id = user._id;
         const token = jwt.sign(
             { email: user.email, id: user._id, userType: user.userType }, // Including userType in the token
             process.env.JWT_SECRET,
             { expiresIn: "1h" }
         );
-        res.cookie("token", token,  {
+        res.cookie("token", token, {
             httpOnly: true,
         });
 
         let redirectUrl;
         switch (user.userType) {
             case 'admin':
-                redirectUrl = `/admin/${id}`; 
+                redirectUrl = `/admin/${id}`;
                 break;
-            case 'staff':
-                redirectUrl = `/staff/${id}`; 
+            case 'experts':
+                redirectUrl = `/staff/${id}`;
                 break;
             case 'student':
-                redirectUrl = `/student/${id}`; 
+                redirectUrl = `/student/${id}`;
                 break;
             default:
                 return res.status(401).json({ message: "Invalid user type" });
         }
 
         // return res.status(201).json({ redirectUrl, token, id, userType: user.userType, type: user.type }); // Returning userType and user.type
-          
+
         return res.status(201).json({ redirectUrl, token, id, userType: user.userType, profile: user.image, email: user.email }); // Returning userType
     } catch (error) {
         console.error(error);

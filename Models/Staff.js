@@ -33,7 +33,7 @@ const staffSchema = new mongoose.Schema({
   // expertise: { type: String, required: true },
   Rating: { type: mongoose.Schema.Types.ObjectId, ref: "Rating" },
   //  Availability:{type: String, required: true},
-  userType: { type: String, enum: ["staff"], default: "staff" },
+  userType: { type: String, enum: ["experts"], default: "experts" },
   image: { type: String },
   chat: {
     type: mongoose.Schema.Types.ObjectId,

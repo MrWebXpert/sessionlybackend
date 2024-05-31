@@ -5,9 +5,49 @@ const asyncHandler = require("express-async-handler");
 const Admin = require("../Models/Admin.js");
 const Staff = require("../Models/Staff.js");
 const Calendar = require("../Models/Calendar.js");
+
+
+
+// exports.createCourse = asyncHandler(async (req, res) => {
+//     const { id } = req.params;
+//     const { title, duration, sessionPrice, category, subCategory, image } = req.body;
+
+//     const isAdmin = await Admin.findById(id);
+//     const isStaff = await Staff.findById(id);
+
+//     if (!isAdmin && !isStaff) {
+//         return res.status(403).json({ message: 'Only admins and staff can create courses' });
+//     }
+
+//     const course = new Course({
+//         title,
+//         duration,
+//         image,
+//         category,
+//         subCategory,
+//         sessionPrice
+//     });
+
+//     if (isAdmin) {
+//         course.admin = id;
+//         isAdmin.courses = isAdmin.courses || [];
+//         isAdmin.courses.push(course._id);
+//         await isAdmin.save();
+//     } else if (isStaff) {
+//         course.staff = id;
+//         isStaff.course = isStaff.course || [];
+//         isStaff.course.push(course._id);
+//         await isStaff.save();
+//     }
+
+//     await course.save();
+
+//     res.status(201).json({ message: 'Course created successfully', course });
+// });
 exports.createCourse = asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const { title, duration, sessionPrice, category, subCategory, image } = req.body;
+    const { title, duration, sessionPrice, category, subCategory, description } = req.body;
+    const file = req.file;
 
     const isAdmin = await Admin.findById(id);
     const isStaff = await Staff.findById(id);
@@ -15,14 +55,17 @@ exports.createCourse = asyncHandler(async (req, res) => {
     if (!isAdmin && !isStaff) {
         return res.status(403).json({ message: 'Only admins and staff can create courses' });
     }
+    const uploadImage = new File({ ...file });
+    await uploadImage.save();
 
     const course = new Course({
         title,
+        description,
         duration,
-        image,
         category,
         subCategory,
-        sessionPrice
+        sessionPrice,
+        image: `http://localhost:5080/api/v2/image/${uploadImage._id}`,
     });
 
     if (isAdmin) {

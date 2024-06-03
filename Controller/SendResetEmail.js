@@ -32,7 +32,7 @@ exports.changePasswordEmail = asyncHandler(async (req, res) => {
             expiresIn: '20min'
         });
 
-        const resetLink = `http://localhost:3000/resetpassword/${user._id}/${token}`;
+        const resetLink = `${process.env.FRONTEND_URI}/resetpassword/${user._id}/${token}`;
         const message = `Change your password using the provided link.This link will expire in 20 minutes: ${resetLink}`;
 
         const mail = {

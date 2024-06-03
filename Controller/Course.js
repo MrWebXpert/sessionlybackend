@@ -111,14 +111,14 @@ exports.getCourse = asyncHandler(async (req, res, next) => {
 });
 exports.updateCourse = asyncHandler(async (req, res) => {
     const { id } = req.params
-    const body = req.body
+    const body = req.body;
     try {
         const course = await Course.findByIdAndUpdate(id, body, { new: true })
         if (!course) {
             return res.status(404).json({ message: "Course Not Found" })
         }
 
-        return res.status(201).json({ message: "Course Is Updated Successfully" })
+        return res.status(201).json({ message: "Course Is Updated Successfully", course })
 
     } catch (error) {
         return res.status(401).json({ message: "Failed to update Course", error: error.message })

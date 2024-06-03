@@ -13,7 +13,7 @@ const CourseBooking = require("../Models/CoursBooking.js");
 
 
 exports.register = asyncHandler(async (req, res) => {
-  const { username, email, password, phone, sessionPrice } = req.body;
+  const { username, email, password, phone, sessionPrice, languageofExpertise } = req.body;
   const file = req.file;
 
   try {
@@ -38,6 +38,7 @@ exports.register = asyncHandler(async (req, res) => {
       password: hash,
       phone: phone,
       sessionPrice: sessionPrice,
+      languageofExpertise: languageofExpertise,
       image: ` http://localhost:5080/api/v2/image/${uploadImage._id}`,
     });
 
